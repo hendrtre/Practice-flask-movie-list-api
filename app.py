@@ -1,10 +1,44 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
+from flask_cors import CORS
+import os
 
 app = Flask(__name__)
+CORS(app)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "app.sqlite")
+
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
+
+class Movie(db.Model):
+    __tablename__ = "movies"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    genre = db.Column(db.String(100), nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)
+    public_id = db.Column(db.String(200), nullable=False)
+
+    def __init__(self, title, genre, image_url, public_id):
+        self.title = title
+        self.genre = genre
+        self.image_url = image_url
+        self.public_id = public_id
+
+class MovieSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "title", "genre", "image_url", "public_id")
+
+movie_schema = MovieSchema()
+movies_schema = MovieSchema(many=True)
 
 @app.route("/")
 def hello():
-    return "<p>Hello my baby, hello my darling, its a bright new wooooorrrrlllldd!</p><p>Hello, World!</p>"
+    return "Hello, World! Itsa me your movie friend!!"
+
+
 
 if __name__ == "__main__":
     app.debug = True
