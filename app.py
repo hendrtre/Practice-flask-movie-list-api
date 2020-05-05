@@ -38,7 +38,20 @@ movies_schema = MovieSchema(many=True)
 def hello():
     return "Hello, World! Itsa me your movie friend!!"
 
+@app.route("/api/v1/movie", methods=["POST"])
+def add_movie():
+    title = request.json["title"]
+    genre = request.json["genre"]
+    image_url = request.json["image_url"]
+    public_id = request.json["public_id"]
 
+    new_movie = Movie(title, genre, image_url, public_id)
+
+    db.session.add(new_movie)
+    db.session.commit()
+
+    movie = Movie.query.get(new_movie.id)
+    return movie_schema.jsonify(movie)
 
 if __name__ == "__main__":
     app.debug = True
