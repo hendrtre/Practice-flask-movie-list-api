@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
+from flask_heroku import Heroku
 # import cloudinary as Cloud
 import os
 
@@ -12,10 +13,12 @@ import os
 # })
 
 app = Flask(__name__)
+heroku = Heroku(app)
 CORS(app)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "app.sqlite")
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "app.sqlite")
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://orygentzbhpfuf:5cf9be768d95fb69482d788417e5215f0eff67ef24e5b3a21699f84643514175@ec2-52-7-39-178.compute-1.amazonaws.com:5432/d4b6dl5sg8dsm4"
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
