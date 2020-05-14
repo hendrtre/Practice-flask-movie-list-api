@@ -19,3 +19,31 @@
     - [flask-cors-docs](https://flask-cors.readthedocs.io/en/latest/)
 
 - Install all dependencies
+```
+$ pipenv install Flask Flask-SQLAlchemy flask-marshmallow Flask-Cors
+```
+
+- Create your sqlite database
+```
+$ pipenv shell
+$ python
+>>> from app import db
+>>> db.create_all()
+```
+
+- Flask Routes
+  - POST One Movie
+    - http://localhost:5000/api/v1/movie
+    ```json
+    {
+        "title": "Scary Movie",
+        "genre": "Thriller",
+        "image_url": "http://cloudinaryimage.com",
+        "public_id": "random_public_id"
+    }
+    ```
+  - GET All Movies
+    - http://localhost:5000/api/v1/movies
+  - DELETE One Movie
+    - http://localhost:5000/api/v1/movie/id
+
